@@ -12,7 +12,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache</groupId>
@@ -80,7 +80,7 @@
     <checkstyle.conf.dir>${basedir}/${hive.path.to.root}/checkstyle</checkstyle.conf.dir>
 
     <!-- Test Properties -->
-    <test.extra.path></test.extra.path>
+    <test.extra.path />
     <!--suppress UnresolvedMavenProperty -->
     <test.hive.hadoop.classpath>${maven.test.classpath}</test.hive.hadoop.classpath>
     <test.log4j.scheme>file://</test.log4j.scheme>
@@ -93,8 +93,8 @@
     <test.warehouse.scheme>pfile://</test.warehouse.scheme>
 
     <!-- To add additional exclude patterns set this property -->
-    <test.excludes.additional></test.excludes.additional>
-    <skip.spark.files></skip.spark.files>
+    <test.excludes.additional />
+    <skip.spark.files />
 
     <!-- Plugin and Plugin Dependency Versions -->
     <ant.contrib.version>1.0b3</ant.contrib.version>
@@ -150,7 +150,7 @@
     <guava.version>19.0</guava.version>
     <groovy.version>2.4.11</groovy.version>
     <h2database.version>1.3.166</h2database.version>
-    <hadoop.version>3.1.1.3.1.0.0-SNAPSHOT</hadoop.version>
+    <hadoop.version>3.1.1.3.1.0.3-2</hadoop.version>
     <hadoop.bin.path>${basedir}/${hive.path.to.root}/testutils/hadoop</hadoop.bin.path>
     <hamcrest.version>1.3</hamcrest.version>
     <hbase.version>2.0.2.3.1.0.0-SNAPSHOT</hbase.version>
@@ -1148,7 +1148,7 @@
             <configuration>
               <exportAntProperties>true</exportAntProperties>
               <target>
-                <property name="maven.test.classpath" refid="maven.test.classpath"/>
+                <property name="maven.test.classpath" refid="maven.test.classpath" />
               </target>
             </configuration>
           </execution>
@@ -1168,7 +1168,7 @@
                 <mkdir dir="${test.conf.dir}" />
                 <!-- copies hive-site.xml so it can be modified -->
                 <copy todir="${test.conf.dir}">
-                  <fileset dir="${basedir}/${hive.path.to.root}/data/conf/"/>
+                  <fileset dir="${basedir}/${hive.path.to.root}/data/conf/" />
                 </copy>
               </target>
             </configuration>
@@ -1391,19 +1391,18 @@
                 <phase>generate-sources</phase>
                 <configuration>
                   <target>
-                    <taskdef name="for" classname="net.sf.antcontrib.logic.ForTask"
-                      classpathref="maven.plugin.classpath" />
-                    <property name="thrift.args" value="-I ${thrift.home} --gen java:beans,hashcode,generated_annotations=undated --gen cpp --gen php --gen py --gen rb"/>
-                    <property name="thrift.gen.dir" value="${basedir}/src/gen/thrift"/>
-                    <delete dir="${thrift.gen.dir}"/>
-                    <mkdir dir="${thrift.gen.dir}"/>
+                    <taskdef classname="net.sf.antcontrib.logic.ForTask" classpathref="maven.plugin.classpath" name="for" />
+                    <property name="thrift.args" value="-I ${thrift.home} --gen java:beans,hashcode,generated_annotations=undated --gen cpp --gen php --gen py --gen rb" />
+                    <property name="thrift.gen.dir" value="${basedir}/src/gen/thrift" />
+                    <delete dir="${thrift.gen.dir}" />
+                    <mkdir dir="${thrift.gen.dir}" />
                     <for param="thrift.file">
                       <path>
                         <fileset dir="." includes="if/*.thrift,if/test/*.thrift,src/main/thrift/*.thrift" />
                       </path>
                       <sequential>
-                        <echo message="Generating Thrift code for @{thrift.file}"/>
-                        <exec executable="${thrift.home}/bin/thrift"  failonerror="true" dir=".">
+                        <echo message="Generating Thrift code for @{thrift.file}" />
+                        <exec dir="." executable="${thrift.home}/bin/thrift" failonerror="true">
                           <arg line="${thrift.args} -I ${basedir}/include -I ${basedir}/.. -o ${thrift.gen.dir} @{thrift.file} " />
                         </exec>
                       </sequential>
