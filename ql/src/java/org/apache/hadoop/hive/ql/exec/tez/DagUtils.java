@@ -1540,7 +1540,7 @@ public class DagUtils {
 
   private void setupQuickStart(TezEdgeProperty edgeProp, Vertex v)
     throws IOException {
-    if (!edgeProp.isSlowStart()) {
+    if (!edgeProp.isSlowStart() && v != null) {
       Configuration pluginConf = new Configuration(false);
       VertexManagerPluginDescriptor desc =
               VertexManagerPluginDescriptor.create(ShuffleVertexManager.class.getName());
