@@ -43,8 +43,13 @@ public class JavaTimestampObjectInspector
     if (o == null) {
       return null;
     }
-    Timestamp source = (Timestamp) o;
-    return new Timestamp(source);
+    if (o instanceof TimestampWritableV2) {
+      TimestampWritableV2 source = (TimestampWritableV2) o;
+      return new Timestamp(source.getTimestamp());
+    } else {
+      Timestamp source = (Timestamp) o;
+      return new Timestamp(source);
+    }
   }
 
   public Timestamp get(Object o) {
